@@ -64,7 +64,7 @@ A entidade `Paciente` representa o paciente no sistema com os seguintes atributo
 ## Exemplo de Requisição POST (Criar Paciente)
 
 ```
-	{
+{
     "nome": "Jose Avelino Cruz Silva",
     "sexo": "Masculino",
     "etnia": "PA",
