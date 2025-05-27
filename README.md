@@ -65,12 +65,49 @@ A entidade `Paciente` representa o paciente no sistema com os seguintes atributo
 
 ```
 {
-    "nome": "Jose Avelino Cruz Silva",
-    "sexo": "Masculino",
-    "etnia": "PA",
-    "email": "josecruzsilva@email.com",
-    "dataNascimento": "1958-03-04",
-    "telefone": "(11) 97894-5621",
-    "tipo": "VIP"
+  "nome": "João da Silva",
+  "sexo": "Masculino",
+  "etnia": "PA",
+  "email": "joao.silva@email.com",
+  "dataNascimento": "1985-07-20",
+  "telefone": "(11) 98765-4321",
+  "tipo": "PADRAO",
+  "endereco": {
+    "rua": "Rua das Flores, 123",
+    "bairro": "Jardim Primavera",
+    "cidade": "São Paulo",
+    "uf": "SP",
+    "cep": "01234-567"
   }
-``
+}
+```
+## Exemplo de Requisição GET (Listar Todos Pacientes)
+```
+[
+	{
+		"id": 1,
+		"nome": "João da Silva",
+		"sexo": "MASCULINO",
+		"etnia": "PA",
+		"email": "joao.silva@email.com",
+		"dataNascimento": "1985-07-20",
+		"telefone": "(11) 98765-4321",
+		"tipo": "PADRAO",
+		"endereco": {
+			"id": 1,
+			"rua": "Rua das Flores, 123",
+			"bairro": "Jardim Primavera",
+			"cidade": "São Paulo",
+			"uf": "SP",
+			"cep": "01234-567",
+			"links": []
+		},
+		"links": [
+			{
+				"rel": "self",
+				"href": "http://localhost:8080/api/v1/pacientes/1"
+			}
+		]
+	}
+]
+```
