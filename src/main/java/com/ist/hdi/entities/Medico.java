@@ -2,6 +2,8 @@ package com.ist.hdi.entities;
 
 import java.util.Objects;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import com.ist.hdi.enums.Especialidade;
 
 import jakarta.persistence.Entity;
@@ -17,13 +19,13 @@ import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "tb_medico")
-public class Medico {
+public class Medico extends RepresentationModel<Medico> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
-    @Size(min=3, max = 30)
+    @Size(min=3, max = 100)
     private String nome;
 
     @NotNull
