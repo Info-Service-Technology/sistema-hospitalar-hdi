@@ -13,22 +13,28 @@ import com.ist.hdi.repository.MedicoRepository;
 public class MedicoService {
 
 	@Autowired
-	private MedicoRepository medicoRepostory;
+	private MedicoRepository medicoRepository;
 	
-	public List<Medico> ListarTodos(){
-		return medicoRepostory.findAll();
+	public List<Medico> listarTodos(){
+		return medicoRepository.findAll();
 	}
 	
-	public Optional<Medico> buscarMedicoPorId(Long id) {
-		return medicoRepostory.findById(id);
+	public Optional<Medico> buscarPorId(Long id) {
+		return medicoRepository.findById(id);
 			
 	}
 	
 	public Medico salvar(Medico medico) {
-		return medicoRepostory.save(medico);
+		return medicoRepository.save(medico);
 	}
 	
 	public void deletar(Long id) {
-		medicoRepostory.deleteById(id);
+		medicoRepository.deleteById(id);
 	}
+
+	public List<Medico> listarPorEspecialidade(String especialidade) {
+	    return medicoRepository.findByEspecialidadeContainingIgnoreCase(especialidade);
+	}
+
+
 }
