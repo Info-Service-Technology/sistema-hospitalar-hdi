@@ -58,10 +58,10 @@ public class PacienteController {
 
     @PostMapping(consumes = "application/json")
     public ResponseEntity<Paciente> salvar(@Valid @RequestBody Paciente paciente) {
-        Paciente salvo = pacienteService.salvar(paciente);
-        Link selfLink = linkTo(methodOn(PacienteController.class).buscarPorId(salvo.getId())).withSelfRel();
-        salvo.add(selfLink);
-        return ResponseEntity.ok(salvo);
+        Paciente SalvarPaciente = pacienteService.salvar(paciente);
+        Link selfLink = linkTo(methodOn(PacienteController.class).buscarPorId(SalvarPaciente.getId())).withSelfRel();
+        SalvarPaciente.add(selfLink);
+        return ResponseEntity.ok(SalvarPaciente);
     }
 
     @PutMapping(path = "/{id}", consumes = "application/json")
