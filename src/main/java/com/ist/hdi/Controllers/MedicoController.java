@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ist.hdi.Services.MedicoService;
 import com.ist.hdi.entities.Medico;
+import com.ist.hdi.enums.Especialidade;
 
 import jakarta.validation.Valid;
 
@@ -34,16 +35,24 @@ public class MedicoController {
 	private MedicoService medicoService;
 	
 	@GetMapping
-	public ResponseEntity<List<Medico>> listarTodos(){
-		List<Medico> medicos = medicoService.listarTodos();
-		
-		// Adicona links HATEOAS a cada medico
-		medicos = medicos.stream().peek(medico -> {
-			Link selfLink = linkTo(methodOn(MedicoController.class).buscarPorId(medico.getId())).withSelfRel();
-			medico.add(selfLink);
-		}).collect(Collectors.toList());
-		return ResponseEntity.ok(medicos);
+	public ResponseEntity<List<Medico>> listar(
+	        @RequestParam(required = false) String nome,
+	        @RequestParam(required = false) String crm,
+	        @RequestParam(required = false) String especialidade,
+			@RequestParam(required = false) String telefone,
+			@RequestParam(required = false) String email){
+
+	    List<Medico> medicos = medicoService.listar(nome, crm, especialidade, telefone, email);
+
+	    // HATEOAS
+	    medicos = medicos.stream().peek(medico -> {
+	        Link selfLink = linkTo(methodOn(MedicoController.class).buscarPorId(medico.getId())).withSelfRel();
+	        medico.add(selfLink);
+	    }).collect(Collectors.toList());
+
+	    return ResponseEntity.ok(medicos);
 	}
+
 	
 	@GetMapping(path = "/{id}")
 	public ResponseEntity<Medico> buscarPorId(@PathVariable Long id){
@@ -83,9 +92,9 @@ public class MedicoController {
 		return ResponseEntity.noContent().build();
 	}
 	
-	@GetMapping
+	@GetMapping("/especialidade/{especialidade}")
 	public ResponseEntity<List<Medico>> listarPorEspecialidade(
-	        @RequestParam(required = false) String especialidade) {
+	        @PathVariable Especialidade especialidade) {
 	    
 	    List<Medico> medicos;
 
