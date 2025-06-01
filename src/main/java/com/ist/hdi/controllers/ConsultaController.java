@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody; // CORRETO
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.util.UriComponents;
 
 import com.ist.hdi.entities.Consulta;
 import com.ist.hdi.services.ConsultaService;
@@ -36,7 +38,8 @@ public class ConsultaController {
     
     @GetMapping
     @Operation(summary = "Listar consultas", description = "Retorna todas as consultas cadastradas")
-    @ApiResponse(responseCode = "200", description = "Sucesso")
+    @ApiResponse(responseCode = "200", description = "Consultas lsitadas com Sucesso")
+    @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     public ResponseEntity<List<Consulta>> listarTodas() {
         List<Consulta> consultas = consultaService.listarTodas();
 
@@ -50,6 +53,10 @@ public class ConsultaController {
     }
 
     @GetMapping(path = "/{id}")
+    @Operation(summary = "Buscar consulta por ID", description = "Retorna uma consulta específica")
+    @ApiResponse(responseCode = "200", description = "Consulta encontrada")
+    @ApiResponse(responseCode = "404", description = "Consulta não encontrada")
+    @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     public ResponseEntity<Consulta> buscarPorId(@PathVariable Long id) {
         return consultaService.buscarPorId(id)
                 .map(consulta -> {
@@ -61,16 +68,30 @@ public class ConsultaController {
     }
 
     @PostMapping
-    @Operation(summary = "Salvar consulta", description = "Salva uma nova consulta")
+    @Operation(summary = "Criar consulta", description = "Cadastra uma nova consulta")
     @ApiResponse(responseCode = "201", description = "Consulta criada com sucesso")
+    @ApiResponse(responseCode = "400", description = "Dados inválidos na requisição")
+    @ApiResponse(responseCode = "404", description = "Paciente ou médico não encontrado")
+    @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     public ResponseEntity<Consulta> salvar(@Valid @RequestBody Consulta consulta) {
         Consulta consultaSalva = consultaService.salvar(consulta);
-        Link selfLink = linkTo(methodOn(ConsultaController.class).buscarPorId(consultaSalva.getId())).withSelfRel();
-        consultaSalva.add(selfLink);
-        return ResponseEntity.status(201).body(consultaSalva);
+        
+        UriComponents uriComponents = ServletUriComponentsBuilder
+            .fromCurrentRequest()
+            .path("/{id}")
+            .buildAndExpand(consultaSalva.getId());
+
+        return ResponseEntity
+            .created(uriComponents.toUri())
+            .body(consultaSalva);
     }
     
     @PutMapping(path = "/{id}", consumes = "application/json")
+    @Operation(summary = "Atualizar consulta", description = "Atualiza uma consulta existente")
+    @ApiResponse(responseCode = "200", description = "Consulta atualizada com sucesso")
+    @ApiResponse(responseCode = "400", description = "Dados inválidos na requisição")
+    @ApiResponse(responseCode = "404", description = "Consulta não encontrada")
+    @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     public ResponseEntity<Consulta> atualizar(@PathVariable Long id, @Valid @RequestBody Consulta consulta) {
         if (!consultaService.buscarPorId(id).isPresent()) {
             return ResponseEntity.notFound().build();
@@ -82,6 +103,10 @@ public class ConsultaController {
     }
     
     @DeleteMapping(path ="/{id}")
+    @Operation(summary = "Excluir consulta", description = "Remove uma consulta do sistema")
+    @ApiResponse(responseCode = "204", description = "Consulta excluída com sucesso")
+    @ApiResponse(responseCode = "404", description = "Consulta não encontrada")
+    @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     public ResponseEntity<Void> deletar(@PathVariable Long id){
         if(!consultaService.buscarPorId(id).isPresent()) {
             return ResponseEntity.notFound().build();
