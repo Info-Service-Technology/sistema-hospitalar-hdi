@@ -3,6 +3,8 @@ package com.ist.hdi.entities;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,7 +16,7 @@ import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name="tb_consulta")
-public class Consulta {
+public class Consulta extends RepresentationModel<Consulta> {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +26,7 @@ public class Consulta {
 	@ManyToOne
 	@JoinColumn(name = "paciente_id")
 	private Paciente paciente;
+	
 	
 	@ManyToOne
 	@JoinColumn(name= "medico_id")
