@@ -1,4 +1,4 @@
-package com.ist.hdi.Services;
+package com.ist.hdi.services;
 
 import java.util.List;
 import java.util.Optional;

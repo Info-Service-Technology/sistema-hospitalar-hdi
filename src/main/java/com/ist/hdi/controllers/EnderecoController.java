@@ -1,4 +1,4 @@
-package com.ist.hdi.Controllers;
+package com.ist.hdi.controllers;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.ist.hdi.Services.EnderecoService;
 import com.ist.hdi.entities.Endereco;
+import com.ist.hdi.services.EnderecoService;
 
 import jakarta.validation.Valid;
 

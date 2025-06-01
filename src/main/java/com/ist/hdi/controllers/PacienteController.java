@@ -1,4 +1,4 @@
-package com.ist.hdi.Controllers;
+package com.ist.hdi.controllers;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -19,9 +19,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ist.hdi.Services.PacienteService;
 import com.ist.hdi.entities.Paciente;
+import com.ist.hdi.services.PacienteService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 
 @RestController
@@ -33,6 +35,8 @@ public class PacienteController {
     private PacienteService pacienteService;
 
     @GetMapping
+    @Operation(summary = "Listar pacientes", description = "Retorna todos os pacientes cadastrados")
+    @ApiResponse(responseCode = "200", description = "Sucesso")
     public ResponseEntity<List<Paciente>> listarTodos() {
         List<Paciente> pacientes = pacienteService.listarTodos();
 

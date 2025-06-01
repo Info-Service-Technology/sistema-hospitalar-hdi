@@ -1,4 +1,4 @@
-package com.ist.hdi.Controllers;
+package com.ist.hdi.controllers;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -20,9 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ist.hdi.Services.MedicoService;
 import com.ist.hdi.entities.Medico;
 import com.ist.hdi.enums.Especialidade;
+import com.ist.hdi.services.MedicoService;
 
 import jakarta.validation.Valid;
 
