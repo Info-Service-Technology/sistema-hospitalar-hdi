@@ -29,7 +29,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping(path="/api/v1/consultas", produces="application/json")
+@RequestMapping(path="/api/v1/consultas")
 @CrossOrigin(origins = "*")
 public class ConsultaController {
 
@@ -86,7 +86,7 @@ public class ConsultaController {
             .body(consultaSalva);
     }
     
-    @PutMapping(path = "/{id}", consumes = "application/json")
+    @PutMapping(path = "/{id}")
     @Operation(summary = "Atualizar consulta", description = "Atualiza uma consulta existente")
     @ApiResponse(responseCode = "200", description = "Consulta atualizada com sucesso")
     @ApiResponse(responseCode = "400", description = "Dados inválidos na requisição")
