@@ -1,16 +1,22 @@
 package com.ist.hdi.entities;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import org.springframework.hateoas.RepresentationModel;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 
@@ -37,7 +43,15 @@ public class Consulta extends RepresentationModel<Consulta> {
 	
 	@NotNull
 	private String Diagnostico;
-
+	
+	@OneToMany(mappedBy = "consulta", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Receita> receitas = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "consulta", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonBackReference
+	private List<Exame> exames = new ArrayList<>();
+	
+	
 	public Long getId() {
 		return id;
 	}
@@ -78,15 +92,27 @@ public class Consulta extends RepresentationModel<Consulta> {
 		Diagnostico = diagnostico;
 	}
 
-	public Consulta(Long id, Paciente paciente, Medico medico, LocalDateTime dataHora, String diagnostico) {
+	public List<Receita> getReceitas() {
+		return receitas;
+	}
+
+	public void setReceitas(List<Receita> receitas) {
+		this.receitas = receitas;
+	}
+
+	
+	
+	public Consulta(Long id, @NotNull Paciente paciente, Medico medico, @NotNull LocalDateTime dataHora,
+			@NotNull String diagnostico, List<Receita> receitas) {
 		super();
 		this.id = id;
 		this.paciente = paciente;
 		this.medico = medico;
 		this.dataHora = dataHora;
 		Diagnostico = diagnostico;
+		this.receitas = receitas;
 	}
-	
+
 	public Consulta() {
 		
 	}
