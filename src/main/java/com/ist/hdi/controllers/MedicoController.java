@@ -27,7 +27,7 @@ import com.ist.hdi.services.MedicoService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping(path="/api/v1/medicos", produces="application/json")
+@RequestMapping(path="/api/v1/medicos")
 @CrossOrigin(origins = "*")
 public class MedicoController {
 

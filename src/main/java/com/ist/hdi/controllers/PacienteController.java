@@ -3,6 +3,7 @@ package com.ist.hdi.controllers;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,10 +25,11 @@ import com.ist.hdi.services.PacienteService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping(path = "/api/v1/pacientes", produces = "application/json")
+@RequestMapping(path = "/api/v1/pacientes")
 @CrossOrigin(origins = "*")
 public class PacienteController {
 
@@ -60,15 +62,23 @@ public class PacienteController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping(consumes = "application/json")
+    @PostMapping
+    @Operation(summary = "Cadastrar paciente", description = "Insere um novo paciente na base de dados")
+    @ApiResponses({
+        @ApiResponse(responseCode = "201", description = "Paciente criado com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Requisição inválida"),
+        @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+    })
     public ResponseEntity<Paciente> salvar(@Valid @RequestBody Paciente paciente) {
-        Paciente SalvarPaciente = pacienteService.salvar(paciente);
-        Link selfLink = linkTo(methodOn(PacienteController.class).buscarPorId(SalvarPaciente.getId())).withSelfRel();
-        SalvarPaciente.add(selfLink);
-        return ResponseEntity.ok(SalvarPaciente);
+        Paciente pacienteSalvo = pacienteService.salvar(paciente);
+        Link selfLink = linkTo(methodOn(PacienteController.class).buscarPorId(pacienteSalvo.getId())).withSelfRel();
+        pacienteSalvo.add(selfLink);
+        URI location = URI.create(selfLink.getHref());
+        return ResponseEntity.created(location).body(pacienteSalvo);
     }
 
-    @PutMapping(path = "/{id}", consumes = "application/json")
+
+    @PutMapping(path = "/{id}")
     public ResponseEntity<Paciente> atualizar(@PathVariable Long id, @Valid @RequestBody Paciente paciente) {
         if (!pacienteService.buscarPorId(id).isPresent()) {
             return ResponseEntity.notFound().build();

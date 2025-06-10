@@ -2,7 +2,13 @@ package com.ist.hdi.entities;
 
 import java.util.Objects;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
@@ -12,10 +18,9 @@ public class Prescricao {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     @ManyToOne
-    @JoinColumn(name = "consulta_id")
-    private Consulta consulta;
+    @JoinColumn(name = "receita_id")
+    private Receita receita;
 
     @NotNull
     @ManyToOne
@@ -25,10 +30,10 @@ public class Prescricao {
     @NotNull
     private String posologia;
 
-	public Prescricao(Long id, @NotNull Consulta consulta, @NotNull Medicamento medicamento, String posologia) {
+	public Prescricao(Long id, @NotNull Receita receita, @NotNull Medicamento medicamento, String posologia) {
 		super();
 		this.id = id;
-		this.consulta = consulta;
+		this.receita = receita;
 		this.medicamento = medicamento;
 		this.posologia = posologia;
 	}
@@ -47,12 +52,12 @@ public class Prescricao {
 		this.id = id;
 	}
 
-	public Consulta getConsulta() {
-		return consulta;
+	public Receita getConsulta() {
+		return receita;
 	}
 
-	public void setConsulta(Consulta consulta) {
-		this.consulta = consulta;
+	public void setConsulta(Receita receita) {
+		this.receita = receita;
 	}
 
 	public Medicamento getMedicamento() {
@@ -73,7 +78,7 @@ public class Prescricao {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(consulta, id, medicamento, posologia);
+		return Objects.hash(receita, id, medicamento, posologia);
 	}
 
 	@Override
@@ -85,7 +90,7 @@ public class Prescricao {
 		if (getClass() != obj.getClass())
 			return false;
 		Prescricao other = (Prescricao) obj;
-		return Objects.equals(consulta, other.consulta) && Objects.equals(id, other.id)
+		return Objects.equals(receita, other.receita) && Objects.equals(id, other.id)
 				&& Objects.equals(medicamento, other.medicamento) && Objects.equals(posologia, other.posologia);
 	}
 	
